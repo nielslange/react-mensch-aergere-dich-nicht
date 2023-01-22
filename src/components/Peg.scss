@@ -1,0 +1,28 @@
+// Nord Theme Colors
+$black: #2e3440;
+$blue: #5e81ac;
+$red: #bf616a;
+$yellow: #ebcb8b;
+$green: #a3be8c;
+
+.peg {
+	height: 40px;
+	width: 40px;
+	margin: 3px;
+	box-sizing: border-box;
+	border: 2px solid $black;
+	border-radius: 50%;
+
+	&.yellow {
+		background-color: $yellow;
+	}
+	&.red {
+		background-color: $red;
+	}
+	&.blue {
+		background-color: $blue;
+	}
+	&.green {
+		background-color: $green;
+	}
+}

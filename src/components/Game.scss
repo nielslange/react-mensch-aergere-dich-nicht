@@ -1,0 +1,8 @@
+.game {
+	display: flex;
+
+	& > div {
+		margin: 2em;
+		// border: 1px solid;
+	}
+}
