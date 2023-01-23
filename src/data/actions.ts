@@ -15,17 +15,17 @@ export const setNotice = ( notice: any ) => {
 export const nextPlayer = ( { currentPlayer }: { currentPlayer: Player } ) => {
 	let player = '';
 	switch ( currentPlayer ) {
-		case 'YELLOW':
-			player = 'GREEN';
+		case 'yellow':
+			player = 'green';
 			break;
-		case 'GREEN':
-			player = 'RED';
+		case 'green':
+			player = 'red';
 			break;
-		case 'RED':
-			player = 'BLUE';
+		case 'red':
+			player = 'blue';
 			break;
-		case 'BLUE':
-			player = 'YELLOW';
+		case 'blue':
+			player = 'yellow';
 			break;
 	}
 
