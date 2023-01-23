@@ -6,35 +6,38 @@ $yellow: #ebcb8b;
 $green: #a3be8c;
 
 .board {
-	margin: 20px auto;
+	display: grid;
+	grid-template-columns: repeat(11, 1fr);
+	grid-template-rows: repeat(11, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	// margin: 20px auto;
 	width: 660px;
-	.board-row {
-		.board-cell {
-			margin: 5px;
-			width: 50px;
-			height: 50px;
-			// border: 1px solid black;
-			display: inline-block;
+	.board-cell {
+		margin: 5px;
+		width: 50px;
+		height: 50px;
+		border: 1px solid black;
+		display: inline-block;
+		box-sizing: border-box;
+
+		&.circle {
+			border-radius: 25px;
 			box-sizing: border-box;
+			border: 2px solid #2e3440;
+		}
 
-			&.circle {
-				border-radius: 25px;
-				box-sizing: border-box;
-				border: 2px solid #2e3440;
-			}
-
-			&.yellow {
-				background-color: lighten($yellow, 15%);
-			}
-			&.red {
-				background-color: lighten($red, 15%);
-			}
-			&.blue {
-				background-color: lighten($blue, 15%);
-			}
-			&.green {
-				background-color: lighten($green, 15%);
-			}
+		&.yellow {
+			background-color: lighten($yellow, 15%);
+		}
+		&.red {
+			background-color: lighten($red, 15%);
+		}
+		&.blue {
+			background-color: lighten($blue, 15%);
+		}
+		&.green {
+			background-color: lighten($green, 15%);
 		}
 	}
 }
