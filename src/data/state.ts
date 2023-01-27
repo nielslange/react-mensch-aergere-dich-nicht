@@ -38,7 +38,7 @@ export const initialState: State = {
 	die: Math.floor( Math.random() * 6 ) + 1,
 	currentPlayer: 'yellow',
 	pegs: [
-		{ id: 1, player: 'yellow', field: { initial: 1, yellow: 2 } },
+		{ id: 1, player: 'yellow', field: { initial: 1, yellow: 0 } },
 		{ id: 2, player: 'yellow', field: { initial: 2, yellow: 0 } },
 		{ id: 3, player: 'yellow', field: { initial: 12, yellow: 0 } },
 		{ id: 4, player: 'yellow', field: { initial: 13, yellow: 0 } },
@@ -50,7 +50,7 @@ export const initialState: State = {
 		{ id: 10, player: 'red', field: { initial: 110, red: 0 } },
 		{ id: 11, player: 'red', field: { initial: 120, red: 0 } },
 		{ id: 12, player: 'red', field: { initial: 121, red: 0 } },
-		{ id: 13, player: 'blue', field: { initial: 100, blue: 14 } },
+		{ id: 13, player: 'blue', field: { initial: 100, blue: 0 } },
 		{ id: 14, player: 'blue', field: { initial: 101, blue: 0 } },
 		{ id: 15, player: 'blue', field: { initial: 111, blue: 0 } },
 		{ id: 16, player: 'blue', field: { initial: 112, blue: 0 } },
