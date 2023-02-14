@@ -5,6 +5,8 @@ $red: #bf616a;
 $yellow: #ebcb8b;
 $green: #a3be8c;
 
+$width: 3px;
+
 .board {
 	display: grid;
 	grid-template-columns: repeat(11, 1fr);
@@ -12,17 +14,17 @@ $green: #a3be8c;
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
 	// margin: 20px auto;
-	width: 660px;
+	width: calc($width * 132);
 	.board-cell {
-		margin: 5px;
-		width: 50px;
-		height: 50px;
+		margin: $width;
+		height: calc($width * 10);
+		width: calc($width * 10);
 		// border: 1px solid black;
 		display: inline-block;
 		box-sizing: border-box;
 
 		&.circle {
-			border-radius: 25px;
+			border-radius: 50%;
 			box-sizing: border-box;
 			border: 2px solid #2e3440;
 		}

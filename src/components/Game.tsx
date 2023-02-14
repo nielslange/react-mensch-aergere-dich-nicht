@@ -3,6 +3,7 @@ import store from '../data/store';
 import Board from './Board';
 import Die from './Die';
 import Players from './Players';
+import Notice from './Notice';
 import './Game.scss';
 
 const Game = () => {
@@ -15,6 +16,7 @@ const Game = () => {
 				<div>
 					<Die />
 					<Players />
+					<Notice />
 				</div>
 			</Provider>
 		</div>

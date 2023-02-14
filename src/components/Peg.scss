@@ -5,10 +5,12 @@ $red: #bf616a;
 $yellow: #ebcb8b;
 $green: #a3be8c;
 
+$width: 3px;
+
 .peg {
-	height: 40px;
-	width: 40px;
-	margin: 3px;
+	height: calc($width * 8);
+	width: calc($width * 8);
+	margin: 1px;
 	box-sizing: border-box;
 	border: 2px solid $black;
 	border-radius: 50%;

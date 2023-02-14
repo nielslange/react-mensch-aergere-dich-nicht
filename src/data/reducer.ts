@@ -20,7 +20,7 @@ const reducer = ( state = initialState, action: any ) => {
 			return { ...state, currentPlayer: action.player };
 
 		case MOVE_PEG:
-			return { ...state, pags: action.pegs };
+			return { ...state, pegs: action.pegs };
 
 		default:
 			return state;

@@ -1,5 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
+import { movePeg, setNotice } from '../data/actions';
+import {
+	isOwnPeg,
+	isHomePeg,
+	isStartOccupiedBySamePlayer,
+} from '../data/selectors';
+import getGameStateCode from '../utils';
+
 import './Peg.scss';
 
 interface PegProps {
@@ -12,35 +20,158 @@ interface PegProps {
 }
 
 const Peg = ( props: PegProps ) => {
+	const dispatch = useDispatch();
 	const die = useSelector( ( state: any ) => state.die );
+	const pegs = useSelector( ( state: any ) => state.pegs );
 	const currentPlayer = useSelector( ( state: any ) => state.currentPlayer );
 	const { id, player, yellow, green, red, blue } = props;
 
 	const handleClick = ( event: any ) => {
-		console.log( event.target.dataset );
 		const player = event.target.dataset.player;
 		const yellow = event.target.dataset.yellow;
 		const green = event.target.dataset.green;
 		const red = event.target.dataset.red;
 		const blue = event.target.dataset.blue;
+		const peg = event.target.dataset.peg;
+		const newPegs = JSON.parse( JSON.stringify( pegs ) );
+		const code = getGameStateCode( {
+			player,
+			currentPlayer,
+			die,
+			yellow,
+			green,
+			red,
+			blue,
+			pegs,
+		} ) as number;
 
-		// If the peg is not owned by the current player, return a notice.
-		if ( player !== currentPlayer ) {
-			return alert( 'That peg is not yours!' );
+		console.log( code );
+
+		switch ( code ) {
+			/**
+			 * CODE: 10000
+			 * NOTE: CURRENT_PEG belongs to the OTHER_PLAYER
+			 * TYPE: ERROR
+			 * NOTICE: This is not your CURRENT_PEG.
+			 */
+			case 10000:
+				return dispatch(
+					setNotice( {
+						type: 'error',
+						message: 'This is not your peg!',
+					} )
+				);
+
+			/**
+			 * CODE: 21100
+			 * NOTE: CURRENT_PEG belongs to the CURRENT_PLAYER &&
+			 * 		 CURRENT_PEG stands on HOME &&
+			 * 		 CURRENT_PLAYER rolled a 6 &&
+			 * 		 The start field is occupied by the CURRENT_PLAYER
+			 * TYPE: ERROR
+			 * NOTICE: HOME is occupied by your CURRENT_PEG.
+			 */
+			case 2110:
+				// return dispatch( setNotice( { type: 'error', message: 'Cannot add peg to the board as the start field is occupied!', } ) );
+				return;
+
+			/**
+			 * CODE: 21120
+			 * NOTE: CURRENT_PEG belongs to the CURRENT_PLAYER &&
+			 * 		 CURRENT_PEG stands on HOME &&
+			 * 		 CURRENT_PLAYER rolled a 6 &&
+			 * 		 The start field is occupied by the OTHER_PLAYER
+			 * ACTION: Hit OTHER_PEG, move CURRENT_PEG to the board
+			 * TYPE: SUCCESS
+			 * NOTICE: Hit CURRENT_PEG x and move CURRENT_PEG x to the board.
+			 */
+			case 21120:
+				// return dispatch( setNotice( { type: 'success', message: 'Hit CURRENT_PEG x and move CURRENT_PEG x to the board.', } ) );
+				return;
+
+			/**
+			 * CODE: 21130
+			 * NOTE: CURRENT_PEG belongs to the CURRENT_PLAYER &&
+			 * 		 CURRENT_PEG stands on HOME &&
+			 * 		 CURRENT_PLAYER rolled a 6 &&
+			 * 		 The start field is empty
+			 * ACTION: Move CURRENT_PEG to the board
+			 * TYPE: SUCCESS
+			 * NOTICE: Move CURRENT_PEG x to the board.
+			 */
+			case 21130:
+				// switch ( player ) { case 'yellow': newPegs[ peg - 1 ].field.yellow = 1; break; case 'green': newPegs[ peg - 1 ].field.green = 1; break; case 'red': newPegs[ peg - 1 ].field.red = 1; break; case 'blue': newPegs[ peg - 1 ].field.blue = 1; break; }
+				// dispatch( movePeg( { pegs: newPegs } ) );
+				// dispatch( setNotice( { type: 'success', message: 'Move CURRENT_PEG x to the board.', } ) );
+				return;
+
+			/**
+			 * CODE: 21200
+			 * NOTE: CURRENT_PLAYER did not roll a 6
+			 * TYPE: ERROR
+			 * NOTICE: Moving a CURRENT_PEG to the board requires a 6.
+			 */
+			case 21200:
+				return;
+
+			case 99999:
+				return '🥦';
 		}
 
-		// If the peg is in the homebase, it can only be moved if the die roll is a 6.
-		if ( ( yellow === '0' || green === '0' || red === '0' || blue === '0' ) && die !== 6 ) {
-			return alert( 'You must roll a 6 to move this peg!' );
+		if (
+			die === 6 &&
+			isHomePeg( { yellow, green, red, blue } ) &&
+			! isStartOccupiedBySamePlayer( { currentPlayer, pegs } )
+		) {
+			switch ( player ) {
+				case 'yellow':
+					newPegs[ peg - 1 ].field.yellow = 1;
+					break;
+				case 'green':
+					newPegs[ peg - 1 ].field.green = 1;
+					break;
+				case 'red':
+					newPegs[ peg - 1 ].field.red = 1;
+					break;
+				case 'blue':
+					newPegs[ peg - 1 ].field.blue = 1;
+					break;
+			}
+
+			dispatch( movePeg( { pegs: newPegs } ) );
+			dispatch(
+				setNotice( {
+					type: 'success',
+					message: 'Moving this peg to the board!',
+				} )
+			);
+
+			return;
 		}
 
-		// If the destination is occupied by an own peg, return a notice.
+		switch ( player ) {
+			case 'yellow':
+				newPegs[ peg - 1 ].field.yellow += die;
+				break;
+			case 'green':
+				newPegs[ peg - 1 ].field.green += die;
+				break;
+			case 'red':
+				newPegs[ peg - 1 ].field.red += die;
+				break;
+			case 'blue':
+				newPegs[ peg - 1 ].field.blue += die;
+				break;
+		}
 
-		// If the destination is occupied by an opponent peg, remove the opponent peg from the board.
-
-		// If the destination would exceed the endzone, return a notice.
-
-		// Move the peg to the destination.
+		dispatch( movePeg( { pegs: newPegs } ) );
+		dispatch(
+			setNotice( {
+				type: 'success',
+				message: 'Moving this peg on the board!',
+			} )
+		);
+		return;
 	};
 
 	return (

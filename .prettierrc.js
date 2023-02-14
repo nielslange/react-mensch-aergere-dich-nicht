@@ -2,5 +2,5 @@
 // Useful for editor integrations.
 module.exports = {
 	...require( '@wordpress/prettier-config' ),
-	printWidth: 200,
+	printWidth: 80,
 };

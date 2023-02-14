@@ -2,8 +2,8 @@ export type Player = 'yellow' | 'green' | 'red' | 'blue';
 
 interface State {
 	notice: {
-		message: string;
-		type: 'error' | 'success';
+		message?: string;
+		type?: 'error' | 'info' | 'success';
 	};
 	die: number;
 	currentPlayer: Player;
@@ -31,11 +31,9 @@ interface State {
 }
 
 export const initialState: State = {
-	notice: {
-		message: '🐈 🐈 🐈',
-		type: 'success',
-	},
-	die: Math.floor( Math.random() * 6 ) + 1,
+	notice: {},
+	// die: Math.floor( Math.random() * 6 ) + 1,
+	die: 6,
 	currentPlayer: 'yellow',
 	pegs: [
 		{ id: 1, player: 'yellow', field: { initial: 1, yellow: 0 } },
@@ -50,7 +48,7 @@ export const initialState: State = {
 		{ id: 10, player: 'red', field: { initial: 110, red: 0 } },
 		{ id: 11, player: 'red', field: { initial: 120, red: 0 } },
 		{ id: 12, player: 'red', field: { initial: 121, red: 0 } },
-		{ id: 13, player: 'blue', field: { initial: 100, blue: 0 } },
+		{ id: 13, player: 'blue', field: { initial: 100, blue: 11 } },
 		{ id: 14, player: 'blue', field: { initial: 101, blue: 0 } },
 		{ id: 15, player: 'blue', field: { initial: 111, blue: 0 } },
 		{ id: 16, player: 'blue', field: { initial: 112, blue: 0 } },
